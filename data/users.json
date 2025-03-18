@@ -1,0 +1,82 @@
+[
+  {
+    "firstName": "Jan",
+    "lastName": "Kowalski",
+    "email": "jan.kowalski@example.com",
+    "phone": "+48 123 456 789",
+    "birthDate": "1995-01-01",
+    "role": "Moderator"
+  },
+  {
+    "firstName": "Anna",
+    "lastName": "Nowak",
+    "email": "anna.nowak@example.com",
+    "phone": "+48 234 567 890",
+    "birthDate": "2000-01-01",
+    "role": "User"
+  },
+  {
+    "firstName": "Piotr",
+    "lastName": "Wiśniewski",
+    "email": "piotr.wisniewski@example.com",
+    "phone": "+48 345 678 901",
+    "birthDate": "1990-01-01",
+    "role": "Admin"
+  },
+  {
+    "firstName": "Katarzyna",
+    "lastName": "Wójcik",
+    "email": "katarzyna.wojcik@example.com",
+    "phone": "+48 456 789 012",
+    "birthDate": "1997-01-01",
+    "role": "User"
+  },
+  {
+    "firstName": "Michał",
+    "lastName": "Krawczyk",
+    "email": "michal.krawczyk@example.com",
+    "phone": "+48 567 890 123",
+    "birthDate": "1985-01-01",
+    "role": "Admin"
+  },
+  {
+    "firstName": "Agnieszka",
+    "lastName": "Zielińska",
+    "email": "agnieszka.zielinska@example.com",
+    "phone": "+48 678 901 234",
+    "birthDate": "1993-01-01",
+    "role": "Moderator"
+  },
+  {
+    "firstName": "Tomasz",
+    "lastName": "Szymański",
+    "email": "tomasz.szymanski@example.com",
+    "phone": "+48 789 012 345",
+    "birthDate": "1980-01-01",
+    "role": "User"
+  },
+  {
+    "firstName": "Monika",
+    "lastName": "Dąbrowska",
+    "email": "monika.dabrowska@example.com",
+    "phone": "+48 890 123 456",
+    "birthDate": "1998-01-01",
+    "role": "Admin"
+  },
+  {
+    "firstName": "Paweł",
+    "lastName": "Lewandowski",
+    "email": "pawel.lewandowski@example.com",
+    "phone": "+48 901 234 567",
+    "birthDate": "1987-01-01",
+    "role": "Moderator"
+  },
+  {
+    "firstName": "Ewa",
+    "lastName": "Lis",
+    "email": "ewa.lis@example.com",
+    "phone": "+48 912 345 678",
+    "birthDate": "1996-01-01",
+    "role": "User"
+  }
+]
