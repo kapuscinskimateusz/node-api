@@ -111,3 +111,45 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
+
+exports.getUserStats = async (req, res) => {
+  try {
+    const stats = await User.aggregate([
+      {
+        $group: {
+          _id: "$role",
+          usersNumber: { $sum: 1 },
+          users: {
+            $push: {
+              $concat: ["$firstName", " ", "$lastName"],
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          role: "$_id",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      data: {
+        message: err,
+      },
+    });
+  }
+};

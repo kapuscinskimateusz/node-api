@@ -7,6 +7,8 @@ router
   .route("/youngest-3")
   .get(userController.aliasYoungestUsers, userController.getAllUsers);
 
+router.route("/user-stats").get(userController.getUserStats);
+
 router
   .route("/")
   .get(userController.getAllUsers)
