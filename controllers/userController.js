@@ -1,5 +1,7 @@
 const User = require("./../models/userModel");
 const APIFeatures = require("./../utils/apiFeatures");
+const AppError = require("./../utils/appError");
+const catchAsync = require("./../utils/catchAsync");
 
 exports.aliasYoungestUsers = (req, res, next) => {
   req.query.limit = "3";
@@ -7,150 +9,109 @@ exports.aliasYoungestUsers = (req, res, next) => {
   next();
 };
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    const features = new APIFeatures(User.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const users = await features.query;
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const features = new APIFeatures(User.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const users = await features.query;
 
-    res.status(200).json({
-      status: "success",
-      results: users.length,
-      data: {
-        users,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      data: {
-        message: err,
-      },
-    });
+  res.status(200).json({
+    status: "success",
+    results: users.length,
+    data: {
+      users,
+    },
+  });
+});
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new AppError(`User with id ${req.params.id} not found`, 404));
   }
-};
 
-exports.getUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        user,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      data: {
-        message: err,
-      },
-    });
+exports.createNewUser = catchAsync(async (req, res, next) => {
+  const newUser = await User.create(req.body);
+
+  res.status(201).json({
+    status: "success",
+    data: {
+      user: newUser,
+    },
+  });
+});
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!user) {
+    return next(new AppError(`User with id ${req.params.id} not found`, 404));
   }
-};
 
-exports.createNewUser = async (req, res) => {
-  try {
-    const newUser = await User.create(req.body);
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
 
-    res.status(201).json({
-      status: "success",
-      data: {
-        user: newUser,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      data: {
-        message: err,
-      },
-    });
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return next(new AppError(`User with id ${req.params.id} not found`, 404));
   }
-};
 
-exports.updateUser = async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        user,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      data: {
-        message: err,
-      },
-    });
-  }
-};
-
-exports.deleteUser = async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-
-    res.status(204).json({
-      status: "success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      data: {
-        message: err,
-      },
-    });
-  }
-};
-
-exports.getUserStats = async (req, res) => {
-  try {
-    const stats = await User.aggregate([
-      {
-        $group: {
-          _id: "$role",
-          usersNumber: { $sum: 1 },
-          users: {
-            $push: {
-              $concat: ["$firstName", " ", "$lastName"],
-            },
+exports.getUserStats = catchAsync(async (req, res, next) => {
+  const stats = await User.aggregate([
+    {
+      $group: {
+        _id: "$role",
+        usersNumber: { $sum: 1 },
+        users: {
+          $push: {
+            $concat: ["$firstName", " ", "$lastName"],
           },
         },
       },
-      {
-        $addFields: {
-          role: "$_id",
-        },
+    },
+    {
+      $addFields: {
+        role: "$_id",
       },
-      {
-        $project: {
-          _id: 0,
-        },
+    },
+    {
+      $project: {
+        _id: 0,
       },
-    ]);
+    },
+  ]);
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        stats,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      data: {
-        message: err,
-      },
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats,
+    },
+  });
+});
