@@ -15,7 +15,7 @@ router.route("/user-stats").get(userController.getUserStats);
 
 router
   .route("/")
-  .get(userController.getAllUsers)
+  .get(authController.protect, userController.getAllUsers)
   .post(userController.createNewUser);
 
 router
