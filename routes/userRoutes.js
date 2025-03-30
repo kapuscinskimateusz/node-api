@@ -4,8 +4,17 @@ const authController = require("./../controllers/authController");
 
 const router = express.Router();
 
-router.route("/signup").post(authController.signup);
-router.route("/login").post(authController.login);
+router.post("/signup", authController.signup);
+router.post("/login", authController.login);
+
+router.post("/forgotPassword", authController.forgotPassword);
+router.patch("/resetPassword/:token", authController.resetPassword);
+
+router.patch(
+  "/updateMyPassword",
+  authController.protect,
+  authController.updateMyPassword
+);
 
 router
   .route("/youngest-3")
@@ -15,7 +24,11 @@ router.route("/user-stats").get(userController.getUserStats);
 
 router
   .route("/")
-  .get(authController.protect, userController.getAllUsers)
+  .get(
+    authController.protect,
+    // authController.restrictTo("Admin"),
+    userController.getAllUsers
+  )
   .post(userController.createNewUser);
 
 router
