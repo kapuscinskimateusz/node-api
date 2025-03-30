@@ -16,6 +16,9 @@ router.patch(
   authController.updateMyPassword
 );
 
+router.patch("/updateMe", authController.protect, userController.updateMe);
+router.delete("/deleteMe", authController.protect, userController.deleteMe);
+
 router
   .route("/youngest-3")
   .get(userController.aliasYoungestUsers, userController.getAllUsers);
