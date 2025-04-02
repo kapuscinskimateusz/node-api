@@ -3,11 +3,11 @@ const APIFeatures = require("./../utils/apiFeatures");
 const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
 
-const filterObj = (obj, ...fields) => {
+const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
 
   Object.keys(obj).forEach((el) => {
-    if (fields.includes(el)) newObj[el] = obj[el];
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
 
   return newObj;
@@ -132,11 +132,7 @@ exports.getUserStats = catchAsync(async (req, res, next) => {
       $group: {
         _id: "$role",
         usersNumber: { $sum: 1 },
-        users: {
-          $push: {
-            $concat: ["$firstName", " ", "$lastName"],
-          },
-        },
+        users: { $push: "$email" },
       },
     },
     {

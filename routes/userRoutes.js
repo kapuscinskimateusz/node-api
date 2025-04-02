@@ -27,11 +27,7 @@ router.route("/user-stats").get(userController.getUserStats);
 
 router
   .route("/")
-  .get(
-    authController.protect,
-    // authController.restrictTo("Admin"),
-    userController.getAllUsers
-  )
+  .get(userController.getAllUsers)
   .post(userController.createNewUser);
 
 router
