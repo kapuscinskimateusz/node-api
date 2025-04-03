@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const fs = require("fs");
-const User = require("./../models/userModel");
+const Tour = require("./../models/tourModel");
 
 const db = process.env.DATABASE.replace(
   "<DB_PASSWORD>",
@@ -12,11 +12,11 @@ mongoose.connect(db).then(() => {
   console.log("Succesfully connected to the database!");
 });
 
-const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, "utf-8"));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"));
 
 const importData = async () => {
   try {
-    await User.create(users);
+    await Tour.create(tours);
     console.log("Data successfully imported");
   } catch (err) {
     console.log(err);
@@ -27,7 +27,7 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    await User.deleteMany();
+    await Tour.deleteMany();
     console.log("Data successfully deleted");
   } catch (err) {
     console.log(err);
