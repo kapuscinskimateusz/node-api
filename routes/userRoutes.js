@@ -20,15 +20,9 @@ router.patch("/updateMe", authController.protect, userController.updateMe);
 router.delete("/deleteMe", authController.protect, userController.deleteMe);
 
 router
-  .route("/youngest-3")
-  .get(userController.aliasYoungestUsers, userController.getAllUsers);
-
-router.route("/user-stats").get(userController.getUserStats);
-
-router
   .route("/")
   .get(userController.getAllUsers)
-  .post(userController.createNewUser);
+  .post(userController.createUser);
 
 router
   .route("/:id")
